@@ -12,12 +12,7 @@ public:
         Node* next;
         Node* prev;
         T data;
-     //   Node() : next(nullptr), prev(nullptr){}
     };
-
-
-
-
 
     void show() const override {
         if (elNum == 0) {
@@ -67,13 +62,23 @@ public:
         Node *p = first_node;
         size_t cntr = 0;
         last_node = nullptr;
+        Node *new_node = new Node{};
+        new_node->data = val;
+        if (ind == 0) {
+            first_node = new_node;
+           // new_node->next = p;
+           // new_node->prev = nullptr;
+        }
         while ( cntr != ind ) {
             last_node = p;
             p = p->next;
             cntr++;
         }
-        std::cout << "el " <<ind+1 << " data= " << p->data << std::endl;
-        p->data = val;
+        if (last_node) last_node->next = new_node;
+        new_node->next = p;
+
+        std::cout << "el " <<ind << " data= " << p->data << std::endl;
+
     }
 
     size_t size() const override {
