@@ -8,9 +8,9 @@ class Base_Container {
 public:
     virtual ~Base_Container() {}
     virtual void show() const = 0;
-    virtual void push_back( TYPE val ) = 0;
-    virtual void erase( size_t ind ) = 0;
-    virtual void insert( size_t ind, TYPE val) = 0;
+    virtual void push_back( const TYPE & val ) = 0;
+    virtual void erase( const size_t ind ) = 0;
+    virtual void insert( const size_t ind, const TYPE & val) = 0;
     virtual size_t size() const = 0;
 };
 
