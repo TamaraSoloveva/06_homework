@@ -5,7 +5,7 @@ template <typename T>
 
 class List_Container : public Base_Container<T> {
 public:
-    List_Container() : elNum(0), last_node(nullptr), first_node(nullptr), tmp_node(nullptr) { std::cout << "Constructor List" << std::endl; }
+    List_Container() : elNum(0), memSz(0), last_node(nullptr), first_node(nullptr), tmp_node(nullptr) { }
     ~List_Container() {  }
 
     struct Node {
@@ -41,6 +41,7 @@ public:
         tmp_node = new_node;
         last_node = new_node;
         elNum++;
+        memSz++;
     }
 
 
@@ -55,7 +56,7 @@ public:
         }
        last_node->next = p->next;
        p->prev = last_node;
-//     std::cout << "el " <<ind+1 << " data= " << p->data << std::endl;
+       elNum--;
     }
 
     void insert( const size_t ind, const T & val) override {
@@ -66,8 +67,6 @@ public:
         new_node->data = val;
         if (ind == 0) {
             first_node = new_node;
-           // new_node->next = p;
-           // new_node->prev = nullptr;
         }
         while ( cntr != ind ) {
             last_node = p;
@@ -76,9 +75,8 @@ public:
         }
         if (last_node) last_node->next = new_node;
         new_node->next = p;
-
-        std::cout << "el " <<ind << " data= " << p->data << std::endl;
-
+        elNum++;
+        memSz++;
     }
 
     size_t size() const override {
@@ -90,7 +88,7 @@ public:
 
 
 private:
-    size_t elNum;
+    size_t elNum, memSz;
     Node *last_node;
     Node *first_node;
     Node *tmp_node;

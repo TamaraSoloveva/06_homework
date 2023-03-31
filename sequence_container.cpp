@@ -3,7 +3,7 @@
 template <typename T>
 class Sequence_Container : public Base_Container <T>{
 public:
-    Sequence_Container() : memSz(0), elNum(0) {}
+    Sequence_Container() : mem(new T [5]), memSz(5), elNum(0)  {}
     ~Sequence_Container() { delete []mem; }
 
     void show() const override {
@@ -17,10 +17,17 @@ public:
     }
 
     void push_back( const T & val ) override {
-        memSz++;
         elNum++;
+  /*      if(elNum >= memSz ) {
+            for (size_t i = 0; i < (memSz-1); ++i) {
+                newMem[i] = mem[i];
+            }
+
+        }*/
+        memSz++;
+
         T *newMem = new T [memSz];
-        mem = new T[memSz];
+        //mem = new T[memSz];
         for (size_t i = 0; i < (memSz-1); ++i) {
             newMem[i] = mem[i];
         }

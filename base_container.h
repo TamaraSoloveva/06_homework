@@ -15,9 +15,4 @@ public:
 };
 
 
-
-
-
-
-
 #endif // BASE_CONTAINER_H
