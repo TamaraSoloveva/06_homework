@@ -1,9 +1,11 @@
 #include "base_container.h"
 
+const size_t reserved_mem = 4;
+
 template <typename T>
 class Sequence_Container : public Base_Container <T>{
 public:
-    Sequence_Container() : mem(new T [5]), memSz(5), elNum(0)  {}
+    Sequence_Container() : memSz(0), elNum(0)  {}
     ~Sequence_Container() { delete []mem; }
 
     void show() const override {
@@ -17,23 +19,19 @@ public:
     }
 
     void push_back( const T & val ) override {
-        elNum++;
-  /*      if(elNum >= memSz ) {
-            for (size_t i = 0; i < (memSz-1); ++i) {
+        size_t i = 0;
+        if(elNum >= memSz ) {
+            memSz += reserved_mem;
+            T *newMem = new T [memSz];
+            for (i = 0; i < elNum; ++i) {
                 newMem[i] = mem[i];
             }
-
-        }*/
-        memSz++;
-
-        T *newMem = new T [memSz];
-        //mem = new T[memSz];
-        for (size_t i = 0; i < (memSz-1); ++i) {
-            newMem[i] = mem[i];
+            if (memSz != reserved_mem)
+                delete[]mem;
+            mem = newMem;
         }
-        newMem[memSz-1]  = val;
-        delete[]mem;
-        mem = newMem;
+        mem[elNum] = val;
+        elNum++;
     }
 
     size_t size() const override {
@@ -52,7 +50,7 @@ public:
         size_t i=0, j=0;
          T *newMem = new T [memSz];
          for (i = 0, j=0; i < elNum; ++i, ++j) {
-            if ( j == ind ) {
+            if ( j == (ind-1) ) {
                 ++i;
             }
             newMem[j] = mem[i];
@@ -84,10 +82,9 @@ public:
         mem = newMem;
     }
 
-    T &operator[](const size_t ind) {
-        if ((ind >= memSz) || ( ind < 0)) {
-            std::cout << "Error - Bad index" << std::endl;
-        //    return NULL;
+    T & operator[](const size_t ind) {
+        if ((ind >= elNum) || ( ind < 0)) {
+            throw std::out_of_range("index out of range");
         }
         return mem[ind];
     }
