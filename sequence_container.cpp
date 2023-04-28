@@ -89,6 +89,25 @@ public:
         return mem[ind];
     }
 
+    //оператор перемещения
+    Sequence_Container & operator = ( Sequence_Container && other) noexcept {
+        if (this != &other) {
+            std::swap(*this, other);
+        }
+        return *this;
+
+    }
+
+    //конструктор сдвига
+    Sequence_Container ( Sequence_Container && other ) noexcept {
+        mem = other.mem;
+        other.mem = nullptr;
+        memSz = other.memSz;
+        other.memSz = 0;
+        elNum = other.elNum;
+        other.elNum = 0;
+    }
+
 private:
     T *mem;
     size_t memSz, elNum;

@@ -144,11 +144,65 @@ public:
         return p->data;
     }
 
+    //оператор перемещения
+    List_Container & operator = ( List_Container && other) noexcept {
+        if (this != &other) {
+            std::swap(*this, other);
+        }
+        return *this;
+    }
+
+    //конструктор сдвига
+    List_Container ( List_Container && other ) noexcept {
+        first_node = other.first_node;
+        other.first_node = nullptr;
+        elNum = other.elNum;
+        other.elNum = 0;
+        last_node = other.last_node;
+        other.last_node = nullptr;
+    }
+
+    struct iterator {
+        iterator(Node *node = NULL) : iNode{node} { }
+        T get() { return iNode->data; }
+
+        T& operator* ( ) {
+            return iNode->data;
+        }
+
+        iterator& operator++ () {
+            iNode = iNode->next;
+            return *this;
+        }
+
+        bool operator!= (const iterator & it1) {
+            return !(this == &it1);
+        }
+
+
+    private:
+        Node *iNode;
+    };
+
+
+    iterator begin() {
+        curr_node = first_node;
+        return iterator(first_node);
+    }
+
+    iterator end() {
+        curr_node = last_node;
+        return iterator(last_node);
+    }
+
+
+
 private:
     size_t elNum;
     Node *last_node;
     Node *first_node;
     Node *tmp_node;
+    Node *curr_node;
 };
 
 

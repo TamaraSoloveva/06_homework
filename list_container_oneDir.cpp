@@ -5,7 +5,9 @@ template <typename T>
 
 class List_Container_oneDir : public Base_Container<T> {
 public:
-    List_Container_oneDir() : elNum(0), first_node(nullptr), tmp_node(nullptr) { std::cout << "create" << std::endl; }
+    List_Container_oneDir() : elNum(0), first_node(nullptr), tmp_node(nullptr) {
+        std::cout << "constr" << std::endl;
+    }
 
     ~List_Container_oneDir() {
         std::cout << "destr" << std::endl;
@@ -22,12 +24,6 @@ public:
         T data;
     };
 
-    struct iterator {
-        iterator(Node *node = NULL) : iNode{node} { }
-
-        Node *iNode;
-
-    };
     void show() const override {
         if (elNum == 0) {
             std::cout << "Container is empty" << std::endl;
@@ -105,15 +101,24 @@ public:
         return p->data;
     }
 
-    iterator begin() {
-        return iterator(first_node);
+
+    //оператор перемещения
+    List_Container_oneDir & operator = ( List_Container_oneDir && other) noexcept {
+        if (this != &other) {
+            std::swap(*this, other);
+        }
+        //std::cout << "sdvig operetor" << std::endl;
+        return *this;
+
     }
 
-    iterator end() {
-        return iterator(first_node);
+    //конструктор сдвига
+    List_Container_oneDir ( List_Container_oneDir && other ) noexcept {
+        first_node = other.first_node;
+        other.first_node = nullptr;
+        elNum = other.elNum;
+        other.elNum = 0;
     }
-
-
 
 private:
     size_t elNum;
