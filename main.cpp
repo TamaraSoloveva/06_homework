@@ -5,7 +5,7 @@
 #include "list_container_oneDir.cpp"
 
 template <typename T>
-void run_test(T&  contName ) {
+void run_test(  T & contName ) {
     size_t valNum=0;
     while (valNum != 10 ) {
         contName.push_back(valNum);
@@ -42,8 +42,6 @@ void run_test(T&  contName ) {
 }
 
 
-
-
 int main() {
     std::cout << "Sequence container" << std::endl;
     Sequence_Container <int> con1;
@@ -55,41 +53,34 @@ int main() {
      for (size_t i=0; i < moveCont3.size(); ++i) {
          std::cout << moveCont3[i] << " ";
      }
-
+//==================================================================
     std::cout << "\n\nList container" << std::endl;
     List_Container <int> con2;
     run_test(con2);
 
-    std::cout << "\n\nIterators" << std::endl;
-    List_Container<int>::iterator itr = con2.begin();
-
-    std::cout << "blfflflflf";
-
+    std::cout << "\n\nIterators1" << std::endl;
+    List_Container<int>::iterator itr;
     for ( itr = con2.begin(); itr != con2.end(); ++itr ) {
-        if (*itr == 30)
-            std::cout << "eeeeeee";
-           std::cout << *itr << " ";
+        std::cout << *itr << " " ;
     }
     std::cout << std::endl;
+    std::cout << "\n\nIterators2" << std::endl;
 
     for ( itr = con2.begin(); itr != con2.end(); ++itr) {
         std::cout << itr.get() << " ";
-
     }
     std::cout << std::endl;
-
-
     //семантика перемещения для класса  List_Container
-     List_Container <int> moveCont2 = std::move(con2);
-     std::cout << "\n\nMove semantic for List_container" << std::endl;
-     for (size_t i=0; i < moveCont2.size(); ++i) {
+    std::cout << "\n\nMove semantic for List_container" << std::endl;
+    List_Container <int> moveCont2 = std::move(con2);
+    for (size_t i=0; i < moveCont2.size(); ++i) {
          std::cout << moveCont2[i] << " ";
      }
 
+//==================================================================
     std::cout << "\n\nList container (one dir)" << std::endl;
     List_Container_oneDir <int> con3;
     run_test(con3);
-
 
    //семантика перемещения для класса  List_Container_oneDir
     std::cout << "\n\nMove semantic for List_Container_oneDir" << std::endl;
@@ -98,9 +89,8 @@ int main() {
         std::cout << moveCont[i] << " ";
     }
 
-
-
-
-
     return 0;
 }
+
+
+

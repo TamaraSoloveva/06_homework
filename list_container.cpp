@@ -95,7 +95,7 @@ public:
         }
         Node *new_node = new Node{};
         new_node->data = val;
-        if ( ind < elNum/2 ) {
+        if ( ind < (elNum-1)/2 ) {
             Node *p = first_node;
             size_t cntr = 0;
             tmp_node = nullptr;
@@ -118,11 +118,16 @@ public:
                 tmp_node = p;
                 p = p->prev;
                 cntr--;
-
             }
             p->next = new_node;
             new_node->prev = p;
-            new_node->next = tmp_node;
+            if (ind == elNum) {
+                new_node->next = tmp_node;
+                last_node = tmp_node;
+            }
+            else {
+                new_node->next = tmp_node;
+            }
         }
         elNum++;
     }
@@ -131,7 +136,7 @@ public:
         return elNum;
     }
 
-    T & operator[](const size_t ind) {
+    T & operator[](const size_t ind) const  {
         if ((ind >= elNum) || ( ind < 0)) {
             throw std::out_of_range("index out of range");
         }
@@ -163,35 +168,32 @@ public:
     }
 
     struct iterator {
-        iterator(Node *node = NULL) : iNode{node} { }
-        T get() { return iNode->data; }
+        Node *iNode;
+    public:
+        iterator(Node *node = NULL) : iNode{ node } { }
 
-        T& operator* ( ) {
+        const T& get() { return iNode->data; }
+
+        const T& operator* ( ) {
             return iNode->data;
         }
 
-        iterator& operator++ () {
-            iNode = iNode->next;
-            return *this;
+        iterator operator++ () {
+           iNode = iNode->next;
+           return iNode;
         }
 
-        bool operator!= (const iterator & it1) {
-            return !(this == &it1);
+        bool operator!= (const iterator & it1) const {
+            return !(this->iNode == it1.iNode);
         }
-
-
-    private:
-        Node *iNode;
     };
 
 
     iterator begin() {
-        curr_node = first_node;
         return iterator(first_node);
     }
 
     iterator end() {
-        curr_node = last_node;
         return iterator(last_node);
     }
 
